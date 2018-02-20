@@ -33,7 +33,8 @@ app.use('/api', routes);
 app.use((err, req, res, next) => {
   if (err.statusCode === 404) return next();
   res.status(500).json({
-    err: err,
+    // Never leak the stack trace of the err if running in production mode
+    err: process.env.NODE_ENV === 'production' ? null : err,
     msg: '500 Internal Server Error',
     data: null
   });

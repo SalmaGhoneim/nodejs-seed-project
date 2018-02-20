@@ -34,6 +34,13 @@ module.exports.getProducts = async (req, res) => {
 };
 
 module.exports.getProductsBelowPrice = async (req, res) => {
+  if (!Validations.isNumber(req.params.price)) {
+    return res.status(422).json({
+      err: null,
+      msg: 'price parameter must be a valid number.',
+      data: null
+    });
+  }
   const products = await Product.find({
     price: {
       $lt: req.params.price
@@ -41,7 +48,8 @@ module.exports.getProductsBelowPrice = async (req, res) => {
   }).exec();
   res.status(200).json({
     err: null,
-    msg: 'Products priced below ' + req.params.price + ' retrieved successfully.',
+    msg:
+      'Products priced below ' + req.params.price + ' retrieved successfully.',
     data: products
   });
 };
@@ -122,7 +130,9 @@ module.exports.deleteProduct = async (req, res) => {
       data: null
     });
   }
-  const deletedProduct = await Product.findByIdAndRemove(req.params.productId).exec();
+  const deletedProduct = await Product.findByIdAndRemove(
+    req.params.productId
+  ).exec();
   if (!deletedProduct) {
     return res
       .status(404)

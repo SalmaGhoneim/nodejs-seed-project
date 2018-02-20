@@ -12,7 +12,7 @@ module.exports = {
     'no-dupe-keys': 0,
     'no-console': 0,
     indent: ['error', 2, { SwitchCase: 1 }],
-    'linebreak-style': ['error', 'unix'],
+    'linebreak-style': 0,
     quotes: ['error', 'single'],
     semi: ['error', 'always']
   }
