@@ -4,12 +4,12 @@ const mongoose = require('mongoose'),
 
 // CAPTURE APP TERMINATION / RESTART EVENTS
 // To be called when process is restarted or terminated
-const gracefulShutdown = msg => {
+const gracefulShutdown = () => {
   return new Promise((resolve, reject) => {
     mongoose.connection
       .close()
       .then(() => {
-        resolve(msg);
+        resolve();
       })
       .catch(err => {
         reject(err);
@@ -19,8 +19,9 @@ const gracefulShutdown = msg => {
 
 // For nodemon restarts
 process.once('SIGUSR2', () => {
-  gracefulShutdown('nodemon restart')
+  gracefulShutdown()
     .then(() => {
+      console.log('nodemon restart');
       process.kill(process.pid, 'SIGUSR2');
     })
     .catch(err => {
@@ -30,8 +31,9 @@ process.once('SIGUSR2', () => {
 
 // For app termination
 process.on('SIGINT', () => {
-  gracefulShutdown('App termination (SIGINT)')
+  gracefulShutdown()
     .then(() => {
+      console.log('App termination (SIGINT)');
       process.exit(0);
     })
     .catch(err => {
@@ -41,8 +43,9 @@ process.on('SIGINT', () => {
 
 // For Heroku app termination
 process.on('SIGTERM', () => {
-  gracefulShutdown('App termination (SIGTERM)')
+  gracefulShutdown()
     .then(() => {
+      console.log('App termination (SIGTERM)');
       process.exit(0);
     })
     .catch(err => {
