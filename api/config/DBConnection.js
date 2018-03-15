@@ -1,5 +1,5 @@
 const mongoose = require('mongoose'),
-  config = require('../config/Config'),
+  config = require('../config'),
   dburl = config.MONGO_URI;
 
 // CAPTURE APP TERMINATION / RESTART EVENTS

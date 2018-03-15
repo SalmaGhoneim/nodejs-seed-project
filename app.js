@@ -6,7 +6,7 @@ const express = require('express'),
   compression = require('compression'),
   bodyParser = require('body-parser'),
   routes = require('./api/routes'),
-  config = require('./api/config/Config'),
+  config = require('./api/config'),
   app = express();
 
 app.set('secret', config.SECRET);
