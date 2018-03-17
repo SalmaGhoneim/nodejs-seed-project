@@ -26,6 +26,7 @@ process.once('SIGUSR2', () => {
     })
     .catch(err => {
       console.error(err);
+      process.kill(process.pid, 'SIGUSR2');
     });
 });
 
@@ -38,6 +39,7 @@ process.on('SIGINT', () => {
     })
     .catch(err => {
       console.error(err);
+      process.exit(0);
     });
 });
 
@@ -50,6 +52,7 @@ process.on('SIGTERM', () => {
     })
     .catch(err => {
       console.error(err);
+      process.exit(0);
     });
 });
 
@@ -57,16 +60,17 @@ mongoose.Promise = Promise;
 mongoose
   .connect(dburl)
   .then(() => {
-    console.log('Successfully connected to the database');
+    console.log('Successfully connected to mongoDB');
   })
   .catch(err => {
     console.error(err);
     gracefulShutdown()
       .then(() => {
-        process.exit(0);
+        process.exit(1);
       })
       .catch(err => {
         console.error(err);
+        process.exit(1);
       });
   });
 
